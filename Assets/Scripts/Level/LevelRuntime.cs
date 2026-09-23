@@ -85,37 +85,28 @@ namespace Warehouse.Levels
 
         private void SpawnPlayer(Vector2 pos)
         {
-            GameObject p = new GameObject("Player");
+            GameObject p = PlaceableCatalog.CreateVisual(PlaceableType.PlayerSpawn, pos, 0f,
+                new Vector2(1f, 1f), null);
+            p.name = "Player";
             p.tag = "Player";
-            p.transform.position = new Vector3(pos.x, pos.y, 0f);
-
-            SpriteRenderer sr = p.AddComponent<SpriteRenderer>();
-            sr.sprite = PlaceableCatalog.WhiteSprite;
-            sr.color = new Color(0.2f, 0.9f, 0.4f, 1f);
-            sr.sortingOrder = 20;
-            if (PlaceableCatalog.UnlitMaterial != null)
-                sr.sharedMaterial = PlaceableCatalog.UnlitMaterial;
-            p.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
 
             Rigidbody2D rb = p.AddComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.freezeRotation = true;
             rb.mass = 0.0001f;
 
-            p.AddComponent<BoxCollider2D>();
+            PlaceableCatalog.AddCollider(p, PlaceableType.PlayerSpawn, false);
+
             p.AddComponent<Move>();
             p.AddComponent<Inventory>();
 
             GameObject hold = new GameObject("HoldPoint");
             hold.transform.SetParent(p.transform, false);
-            hold.transform.localPosition = new Vector3(0.6f, 0f, 0f);
+            float offsetWorld = PlaceableCatalog.Get(PlaceableType.PlayerSpawn).size.x * 0.6f;
+            float ps = Mathf.Max(p.transform.lossyScale.x, 0.001f);
+            hold.transform.localPosition = new Vector3(offsetWorld / ps, 0f, 0f);
             _holdPoint = hold.transform;
             _player = p.transform;
-
-            // Move.cs is in the global namespace in this project.
-            var move = p.GetComponent<Move>();
-            if (move != null)
-                move.speed = 5f;
         }
 
         private void SpawnObject(LevelObjectData o, Transform root)
@@ -139,39 +130,33 @@ namespace Warehouse.Levels
             switch (type)
             {
                 case PlaceableType.Box:
-                    SpawnBox(go, marker);
+                    SpawnBox(go, type);
                     break;
                 case PlaceableType.Shelf:
-                    go.AddComponent<BoxCollider2D>();
+                    PlaceableCatalog.AddCollider(go, type, false);
                     ShelfDestination shelf = go.AddComponent<ShelfDestination>();
                     shelf.destinationId = o.destinationId;
                     break;
                 case PlaceableType.Wall:
                 case PlaceableType.Column:
-                    go.AddComponent<BoxCollider2D>();
+                    PlaceableCatalog.AddCollider(go, type, false);
                     break;
                 case PlaceableType.Floor:
-                    // Pure visual ground.
                     break;
                 case PlaceableType.PlayerSpawn:
-                    // Editor-only helper; ignore at runtime.
                     Destroy(go);
                     break;
             }
         }
 
-        private void SpawnBox(GameObject go, LevelObjectMarker marker)
+        private void SpawnBox(GameObject go, PlaceableType type)
         {
             Rigidbody2D rb = go.AddComponent<Rigidbody2D>();
             rb.gravityScale = 0f;
             rb.mass = 0.5f;
 
-            BoxCollider2D solid = go.AddComponent<BoxCollider2D>();
-            solid.isTrigger = false;
-
-            BoxCollider2D trigger = go.AddComponent<BoxCollider2D>();
-            trigger.isTrigger = true;
-            trigger.size = new Vector2(1.25f, 1.25f);
+            PlaceableCatalog.AddCollider(go, type, false);
+            PlaceableCatalog.AddCollider(go, type, true, 1.25f);
 
             Pick pick = go.AddComponent<Pick>();
             pick.playerHoldPoint = _holdPoint;

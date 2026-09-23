@@ -28,8 +28,8 @@ namespace Warehouse.Levels
 
     /// <summary>
     /// Single source of truth for the objects that can be placed in a level.
-    /// Sprites are generated procedurally so the system has no fragile asset
-    /// references; swap in real art later via the optional override sprites.
+    /// Sprites are loaded from Resources/Art (the same textures used by the
+    /// debug level); a generated white sprite is the fallback.
     /// </summary>
     public static class PlaceableCatalog
     {
@@ -37,8 +37,6 @@ namespace Warehouse.Levels
         private static Sprite _whiteSprite;
         private static Material _unlitMaterial;
 
-        // Optional art overrides (loaded from Resources/Art; falls back to the
-        // generated white sprite when a real asset is missing).
         public static readonly Dictionary<PlaceableType, Sprite> SpriteOverrides =
             new Dictionary<PlaceableType, Sprite>();
 
@@ -47,8 +45,9 @@ namespace Warehouse.Levels
             TryOverride(PlaceableType.Floor, "Art/Floor");
             TryOverride(PlaceableType.Wall, "Art/Wall");
             TryOverride(PlaceableType.Column, "Art/Column");
-            TryOverride(PlaceableType.Shelf, "Art/Shelf");
-            TryOverride(PlaceableType.Box, "Art/Box");
+            TryOverride(PlaceableType.Shelf, "Art/Square");
+            TryOverride(PlaceableType.Box, "Art/Square");
+            TryOverride(PlaceableType.PlayerSpawn, "Art/Player");
         }
 
         private static void TryOverride(PlaceableType type, string resourcePath)
@@ -133,13 +132,14 @@ namespace Warehouse.Levels
             if (_defs != null)
                 return;
 
+            // Colors match the objects already used in the debug level.
             _defs = new Dictionary<PlaceableType, PlaceableDef>();
-            Add(PlaceableType.Floor, "Floor", new Color(0.52f, 0.52f, 0.56f), new Vector2(1f, 1f), false, false, false, -20);
-            Add(PlaceableType.Wall, "Wall", new Color(0.30f, 0.31f, 0.36f), new Vector2(1f, 1f), true, false, false, 0);
-            Add(PlaceableType.Column, "Column", new Color(0.18f, 0.18f, 0.22f), new Vector2(1f, 1f), true, false, false, 1);
-            Add(PlaceableType.Shelf, "Shelf", new Color(0.25f, 0.55f, 0.90f), new Vector2(2f, 1f), true, true, false, 2);
-            Add(PlaceableType.Box, "Box", new Color(0.87f, 0.56f, 0.24f), new Vector2(0.9f, 0.9f), true, false, true, 3);
-            Add(PlaceableType.PlayerSpawn, "Player Spawn", new Color(0.20f, 0.90f, 0.35f), new Vector2(0.5f, 0.5f), false, false, false, 6);
+            Add(PlaceableType.Floor, "Floor", Color.white, new Vector2(1f, 1f), false, false, false, -20);
+            Add(PlaceableType.Wall, "Wall", Color.white, new Vector2(1f, 1f), true, false, false, 0);
+            Add(PlaceableType.Column, "Column", Color.white, new Vector2(1f, 1f), true, false, false, 1);
+            Add(PlaceableType.Shelf, "Shelf", new Color(0.769f, 0.769f, 0.769f), new Vector2(2f, 1f), true, true, false, 2);
+            Add(PlaceableType.Box, "Box", new Color(0.717f, 0.478f, 0.213f), new Vector2(1f, 1f), true, false, true, 3);
+            Add(PlaceableType.PlayerSpawn, "Player Spawn", new Color(0.972f, 0.613f, 0.400f), new Vector2(0.7f, 0.7f), false, false, false, 6);
         }
 
         private static void Add(PlaceableType type, string displayName, Color color, Vector2 size,
@@ -166,21 +166,45 @@ namespace Warehouse.Levels
             return WhiteSprite;
         }
 
+        /// <summary>Sprite size in local units (used to size colliders to match the art).</summary>
+        public static Vector2 LocalSpriteSize(PlaceableType type)
+        {
+            Sprite s = GetSprite(type);
+            if (s == null)
+                return Vector2.one;
+            Vector3 b = s.bounds.size;
+            return new Vector2(b.x > 0.0001f ? b.x : 1f, b.y > 0.0001f ? b.y : 1f);
+        }
+
+        public static BoxCollider2D AddCollider(GameObject go, PlaceableType type, bool isTrigger, float sizeMultiplier = 1f)
+        {
+            BoxCollider2D col = go.AddComponent<BoxCollider2D>();
+            col.isTrigger = isTrigger;
+            col.size = LocalSpriteSize(type) * sizeMultiplier;
+            return col;
+        }
+
         /// <summary>Creates the visual object (no collider / gameplay scripts).</summary>
         public static GameObject CreateVisual(PlaceableType type, Vector2 position, float rotation,
             Vector2 scale, Transform parent)
         {
             PlaceableDef def = Get(type);
+            Sprite sprite = GetSprite(type);
+
             GameObject go = new GameObject(def.displayName);
             if (parent != null)
                 go.transform.SetParent(parent, false);
 
             go.transform.position = new Vector3(position.x, position.y, 0f);
             go.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
-            go.transform.localScale = new Vector3(def.size.x * scale.x, def.size.y * scale.y, 1f);
+
+            // Scale the sprite so it exactly fills the object footprint.
+            Vector2 target = new Vector2(def.size.x * scale.x, def.size.y * scale.y);
+            Vector2 spriteSize = LocalSpriteSize(type);
+            go.transform.localScale = new Vector3(target.x / spriteSize.x, target.y / spriteSize.y, 1f);
 
             SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = GetSprite(type);
+            sr.sprite = sprite;
             sr.color = def.color;
             sr.sortingOrder = def.sortingOrder;
             if (UnlitMaterial != null)

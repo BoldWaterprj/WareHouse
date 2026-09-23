@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Globalization;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace Warehouse.Levels
@@ -25,7 +27,7 @@ namespace Warehouse.Levels
                 if (!string.IsNullOrEmpty(dir))
                     Directory.CreateDirectory(dir);
 
-                File.WriteAllText(path, JsonUtility.ToJson(data, true));
+                File.WriteAllText(path, ToJson(data));
                 return true;
             }
             catch (Exception e)
@@ -60,7 +62,6 @@ namespace Warehouse.Levels
                 if (data.playerSpawn == null)
                     data.playerSpawn = new Vec2();
 
-                // Repair objects that were hand-edited.
                 for (int i = 0; i < data.objects.Count; i++)
                 {
                     LevelObjectData o = data.objects[i];
@@ -86,6 +87,91 @@ namespace Warehouse.Levels
                 Debug.LogError("LevelIO.Load failed: " + e);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Hand-written writer so that fields that are not relevant for an object
+        /// (e.g. destinationId on walls) are not written at all.
+        /// JsonUtility is still used for reading (it ignores missing fields).
+        /// </summary>
+        private static string ToJson(LevelData d)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{\n");
+            sb.Append("  \"formatVersion\": ").Append(d.formatVersion).Append(",\n");
+            sb.Append("  \"levelName\": \"").Append(Escape(d.levelName)).Append("\",\n");
+            sb.Append("  \"author\": \"").Append(Escape(d.author)).Append("\",\n");
+            sb.Append("  \"createdUtc\": \"").Append(Escape(d.createdUtc)).Append("\",\n");
+
+            Vec2 spawn = d.playerSpawn ?? new Vec2();
+            sb.Append("  \"playerSpawn\": { \"x\": ").Append(Num(spawn.x))
+              .Append(", \"y\": ").Append(Num(spawn.y)).Append(" },\n");
+
+            sb.Append("  \"objects\": [");
+            bool first = true;
+            if (d.objects != null)
+            {
+                for (int i = 0; i < d.objects.Count; i++)
+                {
+                    LevelObjectData o = d.objects[i];
+                    if (o == null)
+                        continue;
+
+                    if (!first)
+                        sb.Append(",");
+                    first = false;
+
+                    Vec2 p = o.position ?? new Vec2();
+                    Vec2 s = o.scale ?? new Vec2(1f, 1f);
+
+                    sb.Append("\n    {");
+                    sb.Append("\"type\": \"").Append(Escape(o.type)).Append("\", ");
+                    sb.Append("\"id\": \"").Append(Escape(o.id)).Append("\"");
+                    if (!string.IsNullOrEmpty(o.destinationId))
+                        sb.Append(", \"destinationId\": \"").Append(Escape(o.destinationId)).Append("\"");
+                    sb.Append(", \"position\": { \"x\": ").Append(Num(p.x))
+                      .Append(", \"y\": ").Append(Num(p.y)).Append(" }");
+                    sb.Append(", \"rotation\": ").Append(Num(o.rotation));
+                    sb.Append(", \"scale\": { \"x\": ").Append(Num(s.x))
+                      .Append(", \"y\": ").Append(Num(s.y)).Append(" }");
+                    sb.Append("}");
+                }
+            }
+            if (!first)
+                sb.Append("\n  ");
+            sb.Append("]\n}\n");
+            return sb.ToString();
+        }
+
+        private static string Num(float v)
+        {
+            return v.ToString("0.####", CultureInfo.InvariantCulture);
+        }
+
+        private static string Escape(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return "";
+
+            StringBuilder sb = new StringBuilder(s.Length + 8);
+            foreach (char c in s)
+            {
+                switch (c)
+                {
+                    case '"': sb.Append("\\\""); break;
+                    case '\\': sb.Append("\\\\"); break;
+                    case '\n': sb.Append("\\n"); break;
+                    case '\r': sb.Append("\\r"); break;
+                    case '\t': sb.Append("\\t"); break;
+                    default:
+                        if (c < 32)
+                            sb.Append("\\u").Append(((int)c).ToString("x4"));
+                        else
+                            sb.Append(c);
+                        break;
+                }
+            }
+            return sb.ToString();
         }
     }
 }

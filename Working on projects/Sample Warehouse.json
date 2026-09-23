@@ -1,116 +1,22 @@
 {
-    "formatVersion": 1,
-    "levelName": "Sample Warehouse",
-    "author": "Warehouse",
-    "createdUtc": "",
-    "playerSpawn": {
-        "x": 0.0,
-        "y": -3.5
-    },
-    "objects": [
-        {
-            "type": "Floor",
-            "id": "floor01",
-            "destinationId": "",
-            "position": { "x": 0.0, "y": 0.0 },
-            "rotation": 0.0,
-            "scale": { "x": 14.0, "y": 10.0 }
-        },
-        {
-            "type": "Wall",
-            "id": "wall01",
-            "destinationId": "",
-            "position": { "x": -2.0, "y": 4.5 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Wall",
-            "id": "wall02",
-            "destinationId": "",
-            "position": { "x": 0.0, "y": 4.5 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Wall",
-            "id": "wall03",
-            "destinationId": "",
-            "position": { "x": 2.0, "y": 4.5 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Wall",
-            "id": "wall04",
-            "destinationId": "",
-            "position": { "x": -6.5, "y": 0.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Wall",
-            "id": "wall05",
-            "destinationId": "",
-            "position": { "x": 6.5, "y": 0.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Column",
-            "id": "col01",
-            "destinationId": "",
-            "position": { "x": -2.0, "y": 0.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Column",
-            "id": "col02",
-            "destinationId": "",
-            "position": { "x": 2.0, "y": 0.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Shelf",
-            "id": "shelfA",
-            "destinationId": "A",
-            "position": { "x": 3.0, "y": 2.5 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Shelf",
-            "id": "shelfB",
-            "destinationId": "B",
-            "position": { "x": -3.0, "y": 2.5 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Box",
-            "id": "boxA",
-            "destinationId": "A",
-            "position": { "x": 0.0, "y": -2.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Box",
-            "id": "boxB",
-            "destinationId": "B",
-            "position": { "x": -2.5, "y": -2.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        },
-        {
-            "type": "Box",
-            "id": "boxC",
-            "destinationId": "C",
-            "position": { "x": 2.5, "y": -2.0 },
-            "rotation": 0.0,
-            "scale": { "x": 1.0, "y": 1.0 }
-        }
-    ]
+  "formatVersion": 1,
+  "levelName": "Sample Warehouse",
+  "author": "Warehouse",
+  "createdUtc": "",
+  "playerSpawn": { "x": 0, "y": -3.5 },
+  "objects": [
+    { "type": "Floor", "id": "floor01", "position": { "x": 0, "y": 0 }, "rotation": 0, "scale": { "x": 14, "y": 10 } },
+    { "type": "Wall", "id": "wall01", "position": { "x": -2, "y": 4.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Wall", "id": "wall02", "position": { "x": 0, "y": 4.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Wall", "id": "wall03", "position": { "x": 2, "y": 4.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Wall", "id": "wall04", "position": { "x": -6.5, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Wall", "id": "wall05", "position": { "x": 6.5, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Column", "id": "col01", "position": { "x": -2, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Column", "id": "col02", "position": { "x": 2, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Shelf", "id": "shelfA", "destinationId": "A", "position": { "x": 3, "y": 2.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Shelf", "id": "shelfB", "destinationId": "B", "position": { "x": -3, "y": 2.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "boxA", "destinationId": "A", "position": { "x": 0, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "boxB", "destinationId": "B", "position": { "x": -2.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "boxC", "destinationId": "C", "position": { "x": 2.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } }
+  ]
 }
