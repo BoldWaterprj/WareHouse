@@ -1,0 +1,894 @@
+{
+    "formatVersion": 1,
+    "levelName": "Untitled",
+    "author": "",
+    "createdUtc": "2026-09-23T20:15:21.4147911Z",
+    "playerSpawn": {
+        "x": -3862.46240234375,
+        "y": -4327.75732421875
+    },
+    "objects": [
+        {
+            "type": "Floor",
+            "id": "6f5d0744",
+            "destinationId": "",
+            "position": {
+                "x": -3871.5,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "f0ae1b58",
+            "destinationId": "",
+            "position": {
+                "x": -3871.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "01e3348d",
+            "destinationId": "",
+            "position": {
+                "x": -3869.5,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "c0a3daf8",
+            "destinationId": "",
+            "position": {
+                "x": -3868.5,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "131a1e33",
+            "destinationId": "",
+            "position": {
+                "x": -3867.5,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "98e61810",
+            "destinationId": "",
+            "position": {
+                "x": -3867.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "c291ad1f",
+            "destinationId": "",
+            "position": {
+                "x": -3866.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "eb98dca0",
+            "destinationId": "",
+            "position": {
+                "x": -3864.614990234375,
+                "y": -4325.48828125
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "7e4079f6",
+            "destinationId": "",
+            "position": {
+                "x": -3865.0,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "899a5876",
+            "destinationId": "",
+            "position": {
+                "x": -3865.22607421875,
+                "y": -4327.0302734375
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "dbeae9b4",
+            "destinationId": "",
+            "position": {
+                "x": -3866.5,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "071f6b02",
+            "destinationId": "",
+            "position": {
+                "x": -3866.0,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "099c7e4f",
+            "destinationId": "",
+            "position": {
+                "x": -3867.0,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "0f9f5796",
+            "destinationId": "",
+            "position": {
+                "x": -3868.426025390625,
+                "y": -4326.09912109375
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "63f50a67",
+            "destinationId": "",
+            "position": {
+                "x": -3870.0,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "54789aba",
+            "destinationId": "",
+            "position": {
+                "x": -3871.0,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "d25a0fac",
+            "destinationId": "",
+            "position": {
+                "x": -3871.5,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "fa72abd0",
+            "destinationId": "",
+            "position": {
+                "x": -3869.5,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "2bf89fed",
+            "destinationId": "",
+            "position": {
+                "x": -3871.0,
+                "y": -4327.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "6391aa73",
+            "destinationId": "",
+            "position": {
+                "x": -3871.5,
+                "y": -4327.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "e6a20593",
+            "destinationId": "",
+            "position": {
+                "x": -3870.5,
+                "y": -4327.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "6d737fdf",
+            "destinationId": "",
+            "position": {
+                "x": -3869.298828125,
+                "y": -4327.05908203125
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "bd71819c",
+            "destinationId": "",
+            "position": {
+                "x": -3869.0,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "b19745d8",
+            "destinationId": "",
+            "position": {
+                "x": -3868.5,
+                "y": -4327.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "61cec755",
+            "destinationId": "",
+            "position": {
+                "x": -3868.0,
+                "y": -4327.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "28fbfd91",
+            "destinationId": "",
+            "position": {
+                "x": -3867.5,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "6e55a256",
+            "destinationId": "",
+            "position": {
+                "x": -3867.349609375,
+                "y": -4327.5537109375
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "77940bd3",
+            "destinationId": "",
+            "position": {
+                "x": -3866.0,
+                "y": -4327.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "761cf85f",
+            "destinationId": "",
+            "position": {
+                "x": -3865.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Shelf",
+            "id": "8fc3cf28",
+            "destinationId": "A",
+            "position": {
+                "x": -3871.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Shelf",
+            "id": "ee9a85f8",
+            "destinationId": "A",
+            "position": {
+                "x": -3867.5,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Box",
+            "id": "32c4049f",
+            "destinationId": "A",
+            "position": {
+                "x": -3871.0,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Box",
+            "id": "37d3adb7",
+            "destinationId": "A",
+            "position": {
+                "x": -3867.5,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "46fc53f2",
+            "destinationId": "",
+            "position": {
+                "x": -3864.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "e982139f",
+            "destinationId": "",
+            "position": {
+                "x": -3863.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "217f355d",
+            "destinationId": "",
+            "position": {
+                "x": -3862.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "4eeb6a9a",
+            "destinationId": "",
+            "position": {
+                "x": -3861.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "07cc2039",
+            "destinationId": "",
+            "position": {
+                "x": -3859.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "25f37b15",
+            "destinationId": "",
+            "position": {
+                "x": -3860.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "ebd043e6",
+            "destinationId": "",
+            "position": {
+                "x": -3858.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "e6f6ccf2",
+            "destinationId": "",
+            "position": {
+                "x": -3857.0,
+                "y": -4325.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "6cdc446d",
+            "destinationId": "",
+            "position": {
+                "x": -3857.0,
+                "y": -4325.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "0e333249",
+            "destinationId": "",
+            "position": {
+                "x": -3857.0,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "b257cfb6",
+            "destinationId": "",
+            "position": {
+                "x": -3858.0,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "2477b67c",
+            "destinationId": "",
+            "position": {
+                "x": -3859.0,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "18538a16",
+            "destinationId": "",
+            "position": {
+                "x": -3859.582275390625,
+                "y": -4325.779296875
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "37d84803",
+            "destinationId": "",
+            "position": {
+                "x": -3858.709716796875,
+                "y": -4327.2626953125
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "1ab9dd1a",
+            "destinationId": "",
+            "position": {
+                "x": -3855.946044921875,
+                "y": -4326.91357421875
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "fdd8d651",
+            "destinationId": "",
+            "position": {
+                "x": -3856.091552734375,
+                "y": -4325.3134765625
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "20141052",
+            "destinationId": "",
+            "position": {
+                "x": -3856.644287109375,
+                "y": -4328.01904296875
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "0ba9c5bd",
+            "destinationId": "",
+            "position": {
+                "x": -3854.229736328125,
+                "y": -4325.95361328125
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "37ddcc2f",
+            "destinationId": "",
+            "position": {
+                "x": -3857.109619140625,
+                "y": -4327.408203125
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "4abd1294",
+            "destinationId": "",
+            "position": {
+                "x": -3857.720458984375,
+                "y": -4327.05908203125
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "ffb50c24",
+            "destinationId": "",
+            "position": {
+                "x": -3864.5,
+                "y": -4329.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "009c52db",
+            "destinationId": "",
+            "position": {
+                "x": -3860.5,
+                "y": -4329.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "b265cadd",
+            "destinationId": "",
+            "position": {
+                "x": -3861.5,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "d8d39688",
+            "destinationId": "",
+            "position": {
+                "x": -3862.5,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "2479e2fc",
+            "destinationId": "",
+            "position": {
+                "x": -3860.5,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Floor",
+            "id": "3c596ebe",
+            "destinationId": "",
+            "position": {
+                "x": -3863.5,
+                "y": -4326.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Wall",
+            "id": "02f58b03",
+            "destinationId": "",
+            "position": {
+                "x": -3872.5,
+                "y": -4325.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Wall",
+            "id": "32b35e3c",
+            "destinationId": "",
+            "position": {
+                "x": -3872.5,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Wall",
+            "id": "f34b6c73",
+            "destinationId": "",
+            "position": {
+                "x": -3872.5,
+                "y": -4327.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        },
+        {
+            "type": "Column",
+            "id": "8a87257b",
+            "destinationId": "",
+            "position": {
+                "x": -3866.0,
+                "y": -4326.5
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 1.0,
+                "y": 1.0
+            }
+        }
+    ]
+}
