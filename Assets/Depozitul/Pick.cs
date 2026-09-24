@@ -6,6 +6,7 @@ public class Pick : MonoBehaviour
     private bool isPlayerNearby = false;
     public bool isHolding = false;
     private Transform playerTransform;
+    private Inventory playerInventory; 
 
     void Update()
     {
