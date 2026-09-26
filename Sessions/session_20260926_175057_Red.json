@@ -1,0 +1,98 @@
+{
+    "levelName": "Red",
+    "author": "James",
+    "playerName": "James Johnson",
+    "finishedUtc": "2026-09-26T14:50:57.6315413Z",
+    "levelTimerSeconds": 120.0,
+    "elapsedSeconds": 27.150480270385743,
+    "timePercent": 22.62540054321289,
+    "score": 544,
+    "boxScore": 452,
+    "timeBonus": 92,
+    "boxesTotal": 7,
+    "boxesPlaced": 7,
+    "boxesWrongSpectrum": 2,
+    "averageAccuracy": 0.6446571350097656,
+    "averageRedPrecision": 0.985714316368103,
+    "averageGreenPrecision": 0.8957000374794006,
+    "averageBluePrecision": 0.823442816734314,
+    "boxes": [
+        {
+            "id": "677f6b39",
+            "boxColor": "F2C926",
+            "shelfColor": "F2A900",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.90829998254776,
+            "redPrecision": 1.0,
+            "greenPrecision": 0.8748999834060669,
+            "bluePrecision": 0.8500000238418579
+        },
+        {
+            "id": "22ef53f7",
+            "boxColor": "F28C26",
+            "shelfColor": "F2A900",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.912933349609375,
+            "redPrecision": 1.0,
+            "greenPrecision": 0.8888000249862671,
+            "bluePrecision": 0.8500000238418579
+        },
+        {
+            "id": "f21b7547",
+            "boxColor": "F24226",
+            "shelfColor": "F20900",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.8758666515350342,
+            "redPrecision": 1.0,
+            "greenPrecision": 0.7775999903678894,
+            "bluePrecision": 0.8500000238418579
+        },
+        {
+            "id": "8179b265",
+            "boxColor": "D93333",
+            "shelfColor": "F20900",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.8452333807945252,
+            "redPrecision": 0.9000000357627869,
+            "greenPrecision": 0.8357000350952148,
+            "bluePrecision": 0.800000011920929
+        },
+        {
+            "id": "ef905550",
+            "boxColor": "F209B0",
+            "shelfColor": "F200FF",
+            "placed": true,
+            "sameSpectrum": false,
+            "accuracy": 0.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 0.9642999768257141,
+            "bluePrecision": 0.6920999884605408
+        },
+        {
+            "id": "ccf22a2a",
+            "boxColor": "F209C6",
+            "shelfColor": "F200FF",
+            "placed": true,
+            "sameSpectrum": false,
+            "accuracy": 0.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 0.9642999768257141,
+            "bluePrecision": 0.7754999995231628
+        },
+        {
+            "id": "d652a1aa",
+            "boxColor": "F2096D",
+            "shelfColor": "F2005F",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.9702666401863098,
+            "redPrecision": 1.0,
+            "greenPrecision": 0.9642999768257141,
+            "bluePrecision": 0.9465000033378601
+        }
+    ]
+}

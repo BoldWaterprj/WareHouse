@@ -61,6 +61,8 @@ namespace Warehouse.Levels
                     data.objects = new List<LevelObjectData>();
                 if (data.playerSpawn == null)
                     data.playerSpawn = new Vec2();
+                if (data.timer <= 0f)
+                    data.timer = 120f;
 
                 for (int i = 0; i < data.objects.Count; i++)
                 {
@@ -74,6 +76,9 @@ namespace Warehouse.Levels
                     if (o.scale == null) o.scale = new Vec2(1f, 1f);
                     if (string.IsNullOrEmpty(o.id)) o.id = Guid.NewGuid().ToString("N").Substring(0, 8);
                     if (string.IsNullOrEmpty(o.type)) o.type = "Floor";
+
+                    // Older files have no colour code (alpha 0) -> default to white.
+                    if (o.color.a <= 0f) o.color = Color.white;
                 }
 
                 if (string.IsNullOrEmpty(data.levelName))
@@ -90,9 +95,8 @@ namespace Warehouse.Levels
         }
 
         /// <summary>
-        /// Hand-written writer so that fields that are not relevant for an object
-        /// (e.g. destinationId on walls) are not written at all.
-        /// JsonUtility is still used for reading (it ignores missing fields).
+        /// Hand-written writer so irrelevant fields are omitted (e.g. colour on
+        /// walls). JsonUtility is still used for reading (it ignores missing fields).
         /// </summary>
         private static string ToJson(LevelData d)
         {
@@ -104,6 +108,7 @@ namespace Warehouse.Levels
             sb.Append("  \"createdUtc\": \"").Append(Escape(d.createdUtc)).Append("\",\n");
 
             Vec2 spawn = d.playerSpawn ?? new Vec2();
+            sb.Append("  \"timer\": ").Append(Num(d.timer)).Append(",\n");
             sb.Append("  \"playerSpawn\": { \"x\": ").Append(Num(spawn.x))
               .Append(", \"y\": ").Append(Num(spawn.y)).Append(" },\n");
 
@@ -127,8 +132,11 @@ namespace Warehouse.Levels
                     sb.Append("\n    {");
                     sb.Append("\"type\": \"").Append(Escape(o.type)).Append("\", ");
                     sb.Append("\"id\": \"").Append(Escape(o.id)).Append("\"");
-                    if (!string.IsNullOrEmpty(o.destinationId))
-                        sb.Append(", \"destinationId\": \"").Append(Escape(o.destinationId)).Append("\"");
+                    if (HasColor(o.type))
+                        sb.Append(", \"color\": { \"r\": ").Append(Num(o.color.r))
+                          .Append(", \"g\": ").Append(Num(o.color.g))
+                          .Append(", \"b\": ").Append(Num(o.color.b))
+                          .Append(", \"a\": ").Append(Num(o.color.a)).Append(" }");
                     sb.Append(", \"position\": { \"x\": ").Append(Num(p.x))
                       .Append(", \"y\": ").Append(Num(p.y)).Append(" }");
                     sb.Append(", \"rotation\": ").Append(Num(o.rotation));
@@ -141,6 +149,12 @@ namespace Warehouse.Levels
                 sb.Append("\n  ");
             sb.Append("]\n}\n");
             return sb.ToString();
+        }
+
+        private static bool HasColor(string type)
+        {
+            return string.Equals(type, "Shelf", StringComparison.OrdinalIgnoreCase) ||
+                   string.Equals(type, "Box", StringComparison.OrdinalIgnoreCase);
         }
 
         private static string Num(float v)

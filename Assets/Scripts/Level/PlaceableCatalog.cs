@@ -28,11 +28,14 @@ namespace Warehouse.Levels
 
     /// <summary>
     /// Single source of truth for the objects that can be placed in a level.
-    /// Sprites are loaded from Resources/Art (the same textures used by the
-    /// debug level); a generated white sprite is the fallback.
+    /// Sprites come from Resources/Art (regular cube textures); the fallback is
+    /// a generated white sprite.
     /// </summary>
     public static class PlaceableCatalog
     {
+        /// <summary>Sorting order for a box that is resting inside a shelf (behind it).</summary>
+        public const int PlacedBoxSortingOrder = 5;
+
         private static Dictionary<PlaceableType, PlaceableDef> _defs;
         private static Sprite _whiteSprite;
         private static Material _unlitMaterial;
@@ -43,10 +46,10 @@ namespace Warehouse.Levels
         static PlaceableCatalog()
         {
             TryOverride(PlaceableType.Floor, "Art/Floor");
-            TryOverride(PlaceableType.Wall, "Art/Wall");
-            TryOverride(PlaceableType.Column, "Art/Column");
-            TryOverride(PlaceableType.Shelf, "Art/Square");
-            TryOverride(PlaceableType.Box, "Art/Square");
+            TryOverride(PlaceableType.Wall, "Art/Block");
+            TryOverride(PlaceableType.Column, "Art/Block");
+            TryOverride(PlaceableType.Shelf, "Art/Block");
+            TryOverride(PlaceableType.Box, "Art/Block");
             TryOverride(PlaceableType.PlayerSpawn, "Art/Player");
         }
 
@@ -132,13 +135,14 @@ namespace Warehouse.Levels
             if (_defs != null)
                 return;
 
-            // Colors match the objects already used in the debug level.
+            // Floor / Wall / Column use their own textures (white tint shows them as-is).
+            // Shelf / Box are tinted per instance by their colour code.
             _defs = new Dictionary<PlaceableType, PlaceableDef>();
             Add(PlaceableType.Floor, "Floor", Color.white, new Vector2(1f, 1f), false, false, false, -20);
-            Add(PlaceableType.Wall, "Wall", Color.white, new Vector2(1f, 1f), true, false, false, 0);
+            Add(PlaceableType.Wall, "Wall", new Color(0.35f, 0.48f, 0.88f), new Vector2(1f, 1f), true, false, false, 0);
             Add(PlaceableType.Column, "Column", Color.white, new Vector2(1f, 1f), true, false, false, 1);
-            Add(PlaceableType.Shelf, "Shelf", new Color(0.769f, 0.769f, 0.769f), new Vector2(2f, 1f), true, true, false, 2);
-            Add(PlaceableType.Box, "Box", new Color(0.717f, 0.478f, 0.213f), new Vector2(1f, 1f), true, false, true, 3);
+            Add(PlaceableType.Shelf, "Shelf", Color.white, new Vector2(2f, 1f), true, true, false, 10);
+            Add(PlaceableType.Box, "Box", Color.white, new Vector2(1f, 1f), true, false, true, 3);
             Add(PlaceableType.PlayerSpawn, "Player Spawn", new Color(0.972f, 0.613f, 0.400f), new Vector2(0.7f, 0.7f), false, false, false, 6);
         }
 
@@ -184,9 +188,15 @@ namespace Warehouse.Levels
             return col;
         }
 
-        /// <summary>Creates the visual object (no collider / gameplay scripts).</summary>
         public static GameObject CreateVisual(PlaceableType type, Vector2 position, float rotation,
             Vector2 scale, Transform parent)
+        {
+            return CreateVisual(type, position, rotation, scale, parent, (Color?)null);
+        }
+
+        /// <summary>Creates the visual object (no collider / gameplay scripts).</summary>
+        public static GameObject CreateVisual(PlaceableType type, Vector2 position, float rotation,
+            Vector2 scale, Transform parent, Color? colorOverride)
         {
             PlaceableDef def = Get(type);
             Sprite sprite = GetSprite(type);
@@ -198,14 +208,13 @@ namespace Warehouse.Levels
             go.transform.position = new Vector3(position.x, position.y, 0f);
             go.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
 
-            // Scale the sprite so it exactly fills the object footprint.
             Vector2 target = new Vector2(def.size.x * scale.x, def.size.y * scale.y);
             Vector2 spriteSize = LocalSpriteSize(type);
             go.transform.localScale = new Vector3(target.x / spriteSize.x, target.y / spriteSize.y, 1f);
 
             SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = sprite;
-            sr.color = def.color;
+            sr.color = colorOverride ?? def.color;
             sr.sortingOrder = def.sortingOrder;
             if (UnlitMaterial != null)
                 sr.sharedMaterial = UnlitMaterial;

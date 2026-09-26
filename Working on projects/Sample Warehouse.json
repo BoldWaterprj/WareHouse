@@ -1,8 +1,9 @@
 {
-  "formatVersion": 1,
+  "formatVersion": 2,
   "levelName": "Sample Warehouse",
   "author": "Warehouse",
   "createdUtc": "",
+  "timer": 90,
   "playerSpawn": { "x": 0, "y": -3.5 },
   "objects": [
     { "type": "Floor", "id": "floor01", "position": { "x": 0, "y": 0 }, "rotation": 0, "scale": { "x": 14, "y": 10 } },
@@ -13,10 +14,11 @@
     { "type": "Wall", "id": "wall05", "position": { "x": 6.5, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
     { "type": "Column", "id": "col01", "position": { "x": -2, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
     { "type": "Column", "id": "col02", "position": { "x": 2, "y": 0 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
-    { "type": "Shelf", "id": "shelfA", "destinationId": "A", "position": { "x": 3, "y": 2.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
-    { "type": "Shelf", "id": "shelfB", "destinationId": "B", "position": { "x": -3, "y": 2.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
-    { "type": "Box", "id": "boxA", "destinationId": "A", "position": { "x": 0, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
-    { "type": "Box", "id": "boxB", "destinationId": "B", "position": { "x": -2.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
-    { "type": "Box", "id": "boxC", "destinationId": "C", "position": { "x": 2.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } }
+    { "type": "Shelf", "id": "shelfA", "color": { "r": 0.85, "g": 0.2, "b": 0.2, "a": 1 }, "position": { "x": 3, "y": 2.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Shelf", "id": "shelfB", "color": { "r": 0.2, "g": 0.5, "b": 0.9, "a": 1 }, "position": { "x": -3, "y": 2.5 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "box1", "color": { "r": 0.9, "g": 0.3, "b": 0.25, "a": 1 }, "position": { "x": 0, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "box2", "color": { "r": 0.8, "g": 0.15, "b": 0.15, "a": 1 }, "position": { "x": -2.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "box3", "color": { "r": 0.25, "g": 0.4, "b": 0.95, "a": 1 }, "position": { "x": 2.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } },
+    { "type": "Box", "id": "box4", "color": { "r": 0.9, "g": 0.85, "b": 0.2, "a": 1 }, "position": { "x": -4.5, "y": -2 }, "rotation": 0, "scale": { "x": 1, "y": 1 } }
   ]
 }

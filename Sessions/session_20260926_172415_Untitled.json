@@ -1,0 +1,141 @@
+{
+    "levelName": "Untitled",
+    "author": "",
+    "finishedUtc": "2026-09-26T14:24:15.9404679Z",
+    "levelTimerSeconds": 120.0,
+    "elapsedSeconds": 26.205076217651368,
+    "timePercent": 21.837562561035158,
+    "score": 1193,
+    "boxScore": 1100,
+    "timeBonus": 93,
+    "boxesTotal": 11,
+    "boxesPlaced": 11,
+    "boxesWrongSpectrum": 0,
+    "averageAccuracy": 1.0,
+    "averageRedPrecision": 1.0,
+    "averageGreenPrecision": 1.0,
+    "averageBluePrecision": 1.0,
+    "boxes": [
+        {
+            "id": "ba1f6b8e",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "fdda8d88",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "6c27c97c",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "96fc57b3",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "7b63dd5b",
+            "boxColor": "3380E6",
+            "shelfColor": "3380E6",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "e2beecac",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "1e8e8dba",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "a605c104",
+            "boxColor": "3380E6",
+            "shelfColor": "3380E6",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "0a81efb2",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "bfe04877",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        },
+        {
+            "id": "ad255f9e",
+            "boxColor": "E6D933",
+            "shelfColor": "E6D933",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 1.0,
+            "redPrecision": 1.0,
+            "greenPrecision": 1.0,
+            "bluePrecision": 1.0
+        }
+    ]
+}

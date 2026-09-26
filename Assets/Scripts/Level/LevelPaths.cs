@@ -17,6 +17,8 @@ namespace Warehouse.Levels
     {
         public const string WorkingFolderName = "Working on projects";
         public const string ActiveFolderName = "Active levels";
+        public const string SessionsFolderName = "Sessions";
+        public const string WorkerFolderName = "Worker";
         public const string Extension = ".json";
 
         public static string Root
@@ -39,12 +41,29 @@ namespace Warehouse.Levels
             get { return Path.Combine(Root, ActiveFolderName); }
         }
 
+        public static string SessionsDir
+        {
+            get { return Path.Combine(Root, SessionsFolderName); }
+        }
+
+        public static string WorkerDir
+        {
+            get { return Path.Combine(Root, WorkerFolderName); }
+        }
+
+        public static string WorkerFile
+        {
+            get { return Path.Combine(WorkerDir, "worker.json"); }
+        }
+
         public static void EnsureFolders()
         {
             try
             {
                 Directory.CreateDirectory(WorkingDir);
                 Directory.CreateDirectory(ActiveDir);
+                Directory.CreateDirectory(SessionsDir);
+                Directory.CreateDirectory(WorkerDir);
             }
             catch (Exception e)
             {
@@ -82,6 +101,11 @@ namespace Warehouse.Levels
         public static string[] ListActive()
         {
             return List(ActiveDir);
+        }
+
+        public static string[] ListSessions()
+        {
+            return List(SessionsDir);
         }
 
         private static string[] List(string dir)

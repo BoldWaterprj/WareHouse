@@ -1,0 +1,64 @@
+{
+    "levelName": "Sample Warehouse",
+    "author": "Warehouse",
+    "finishedUtc": "2026-09-26T13:48:50.9991806Z",
+    "levelTimerSeconds": 90.0,
+    "elapsedSeconds": 11.145551681518555,
+    "timePercent": 12.383946418762207,
+    "score": 359,
+    "boxScore": 281,
+    "timeBonus": 78,
+    "boxesTotal": 4,
+    "boxesPlaced": 3,
+    "boxesWrongSpectrum": 0,
+    "averageAccuracy": 0.7041666507720947,
+    "averageRedPrecision": 0.7124999761581421,
+    "averageGreenPrecision": 0.6875,
+    "averageBluePrecision": 0.7124999761581421,
+    "boxes": [
+        {
+            "id": "box4",
+            "boxColor": "E6D933",
+            "shelfColor": "",
+            "placed": false,
+            "sameSpectrum": false,
+            "accuracy": 0.0,
+            "redPrecision": 0.0,
+            "greenPrecision": 0.0,
+            "bluePrecision": 0.0
+        },
+        {
+            "id": "box3",
+            "boxColor": "4066F2",
+            "shelfColor": "3380E6",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.9333333373069763,
+            "redPrecision": 0.949999988079071,
+            "greenPrecision": 0.8999999761581421,
+            "bluePrecision": 0.949999988079071
+        },
+        {
+            "id": "box2",
+            "boxColor": "CC2626",
+            "shelfColor": "D93333",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.949999988079071,
+            "redPrecision": 0.949999988079071,
+            "greenPrecision": 0.949999988079071,
+            "bluePrecision": 0.949999988079071
+        },
+        {
+            "id": "box1",
+            "boxColor": "E64C40",
+            "shelfColor": "D93333",
+            "placed": true,
+            "sameSpectrum": true,
+            "accuracy": 0.9333333373069763,
+            "redPrecision": 0.9500000476837158,
+            "greenPrecision": 0.8999999761581421,
+            "bluePrecision": 0.949999988079071
+        }
+    ]
+}

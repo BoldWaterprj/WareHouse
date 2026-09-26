@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private string debugSceneName = "SampleScene";
     [SerializeField] private string levelSelectSceneName = "LevelSelect";
     [SerializeField] private string levelEditorSceneName = "LevelEditor";
-    [SerializeField] private string instructorSceneName = "";
+    [SerializeField] private string instructorSceneName = "Instructor";
 
     [Header("UI")]
     [SerializeField] private Text statusText;

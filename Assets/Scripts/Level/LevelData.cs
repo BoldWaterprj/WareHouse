@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Warehouse.Levels
 {
@@ -18,12 +19,12 @@ namespace Warehouse.Levels
             this.y = y;
         }
 
-        public UnityEngine.Vector2 ToVector2()
+        public Vector2 ToVector2()
         {
-            return new UnityEngine.Vector2(x, y);
+            return new Vector2(x, y);
         }
 
-        public static Vec2 From(UnityEngine.Vector2 v)
+        public static Vec2 From(Vector2 v)
         {
             return new Vec2(v.x, v.y);
         }
@@ -39,8 +40,11 @@ namespace Warehouse.Levels
         /// <summary>Unique instance id.</summary>
         public string id = "";
 
-        /// <summary>Matching key: a box is correctly placed on the shelf with the same destinationId.</summary>
-        public string destinationId = "";
+        /// <summary>
+        /// Colour code for Shelf / Box. The colour IS the matching key: a box
+        /// placed on a shelf with the same colour scores best. Stored in the level.
+        /// </summary>
+        public Color color = Color.white;
 
         public Vec2 position = new Vec2();
         public float rotation = 0f;
@@ -51,10 +55,13 @@ namespace Warehouse.Levels
     [Serializable]
     public class LevelData
     {
-        public int formatVersion = 1;
+        public int formatVersion = 2;
         public string levelName = "Untitled";
         public string author = "";
         public string createdUtc = "";
+
+        /// <summary>Level time in seconds, set in the editor and written explicitly.</summary>
+        public float timer = 120f;
 
         /// <summary>Separate, adjustable player spawn location.</summary>
         public Vec2 playerSpawn = new Vec2(0f, 0f);

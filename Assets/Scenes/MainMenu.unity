@@ -382,7 +382,7 @@ MonoBehaviour:
   debugSceneName: SampleScene
   levelSelectSceneName: LevelSelect
   levelEditorSceneName: LevelEditor
-  instructorSceneName: 
+  instructorSceneName: Instructor
   statusText: {fileID: 1803}
 --- !u!1 &1300
 GameObject:

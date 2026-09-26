@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Warehouse.UI;
 
@@ -10,19 +12,28 @@ namespace Warehouse.Levels
     /// <summary>
     /// Runtime level editor. Its UI is built in code so the scene stays tiny.
     ///
-    /// Controls (place tool selected):
+    /// Controls (place tool):
     ///   Left click / drag   place objects; dragging builds a continuous line
     ///   Right click         delete object under the cursor
-    /// Controls (Hand selected):
-    ///   Left click / drag   move objects and edit their destination id
-    ///   Right click         delete object under the cursor
+    /// Controls (Hand):
+    ///   Left click / drag   move objects and edit their colour
     /// Always:
-    ///   Middle drag         pan camera
-    ///   Mouse wheel         zoom
-    ///   Delete              delete the selected object
+    ///   Middle drag / wheel  pan / zoom
+    ///   Delete               delete selected object
+    ///   Escape               pause menu
     /// </summary>
     public class LevelEditorController : MonoBehaviour
     {
+        private static readonly Color[] Presets =
+        {
+            new Color(0.85f, 0.20f, 0.20f),
+            new Color(0.95f, 0.55f, 0.15f),
+            new Color(0.90f, 0.85f, 0.20f),
+            new Color(0.25f, 0.75f, 0.30f),
+            new Color(0.20f, 0.50f, 0.90f),
+            new Color(0.60f, 0.30f, 0.85f),
+        };
+
         private LevelData _data;
         private readonly Dictionary<string, GameObject> _spawned = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, LevelObjectData> _byId = new Dictionary<string, LevelObjectData>();
@@ -42,14 +53,24 @@ namespace Warehouse.Levels
         private Vector3 _prevMouse;
 
         private Text _status;
-        private Text _destLabel;
         private InputField _nameField;
         private InputField _authorField;
-        private InputField _destField;
+        private InputField _timerField;
+        private GameObject _colorSection;
+        private Image _colorSwatch;
+        private Slider _redSlider;
+        private Slider _greenSlider;
+        private Slider _blueSlider;
+        private Color _currentColor = new Color(0.85f, 0.20f, 0.20f, 1f);
+        private bool _suppressColorEvent;
+
         private GameObject _loadPanel;
         private RectTransform _loadListContent;
+        private GameObject _pausePanel;
+        private GameObject _pauseMain;
+        private GameObject _pauseConfirm;
+        private bool _paused;
         private Button _snapButton;
-        private bool _suppressDestEvent;
 
         private void Start()
         {
@@ -60,9 +81,11 @@ namespace Warehouse.Levels
 
             _data = new LevelData();
             _data.levelName = "Untitled";
+            _data.timer = 120f;
 
             BuildUI();
-            UpdateDestVisibility();
+            SetCurrentColor(_currentColor, false);
+            UpdateColorVisibility();
             UpdateStatus();
         }
 
@@ -85,6 +108,17 @@ namespace Warehouse.Levels
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Escape) && !TypingInField())
+            {
+                if (_pauseConfirm.activeSelf) { ShowPauseMain(); return; }
+                if (_loadPanel.activeSelf) { CloseLoadPanel(); return; }
+                TogglePause();
+                return;
+            }
+
+            if (_paused)
+                return;
+
             HandleCamera();
             HandleTools();
             HandleKeys();
@@ -103,7 +137,7 @@ namespace Warehouse.Levels
             if (Input.GetMouseButtonDown(2))
             {
                 _panning = true;
-                _prevMouse = Input.mousePosition; // anchor the pan so it never jumps
+                _prevMouse = Input.mousePosition;
             }
             if (Input.GetMouseButtonUp(2))
                 _panning = false;
@@ -210,11 +244,8 @@ namespace Warehouse.Levels
         {
             if (TypingInField())
                 return;
-
             if (Input.GetKeyDown(KeyCode.Delete) && _selected != null)
                 Remove(_selected);
-            if (Input.GetKeyDown(KeyCode.Escape) && _loadPanel.activeSelf)
-                CloseLoadPanel();
         }
 
         // ------------------------------------------------------------------ snapping / cells
@@ -274,8 +305,8 @@ namespace Warehouse.Levels
             if (OverlapsExisting(_tool, pos))
                 return;
 
-            string dest = (_tool == PlaceableType.Shelf || _tool == PlaceableType.Box) ? _destField.text : "";
-            PlaceObjectAt(_tool, pos, dest);
+            Color c = (_tool == PlaceableType.Shelf || _tool == PlaceableType.Box) ? _currentColor : Color.white;
+            PlaceObjectAt(_tool, pos, c);
         }
 
         private bool OverlapsExisting(PlaceableType type, Vector2 pos)
@@ -307,13 +338,13 @@ namespace Warehouse.Levels
 
         // ------------------------------------------------------------------ editing
 
-        private void PlaceObjectAt(PlaceableType type, Vector2 pos, string destinationId)
+        private void PlaceObjectAt(PlaceableType type, Vector2 pos, Color color)
         {
             LevelObjectData obj = new LevelObjectData
             {
                 type = type.ToString(),
                 id = System.Guid.NewGuid().ToString("N").Substring(0, 8),
-                destinationId = destinationId,
+                color = color,
                 position = Vec2.From(pos),
                 scale = new Vec2(1f, 1f)
             };
@@ -331,14 +362,17 @@ namespace Warehouse.Levels
                 type = PlaceableType.Floor;
 
             PlaceableDef def = PlaceableCatalog.Get(type);
+            Color? colOverride = (type == PlaceableType.Shelf || type == PlaceableType.Box)
+                ? obj.color : (Color?)null;
+
             GameObject go = PlaceableCatalog.CreateVisual(type, obj.position.ToVector2(), obj.rotation,
-                obj.scale.ToVector2(), _levelRoot);
+                obj.scale.ToVector2(), _levelRoot, colOverride);
             go.name = type + "_" + obj.id;
 
             LevelObjectMarker marker = go.AddComponent<LevelObjectMarker>();
             marker.id = obj.id;
             marker.type = type;
-            marker.destinationId = obj.destinationId;
+            marker.color = obj.color;
             marker.isPickup = def.isPickup;
             marker.isDestination = def.isDestination;
             marker.isPlayerSpawn = type == PlaceableType.PlayerSpawn;
@@ -407,7 +441,7 @@ namespace Warehouse.Levels
 
             if (_selected == m)
                 _selected = null;
-            UpdateDestVisibility();
+            UpdateColorVisibility();
             UpdateStatus();
         }
 
@@ -415,12 +449,8 @@ namespace Warehouse.Levels
         {
             _selected = m;
             if (m != null && (m.isDestination || m.isPickup))
-            {
-                _suppressDestEvent = true;
-                _destField.text = m.destinationId;
-                _suppressDestEvent = false;
-            }
-            UpdateDestVisibility();
+                SetCurrentColor(m.color, false);
+            UpdateColorVisibility();
         }
 
         private void ClearAll()
@@ -458,6 +488,12 @@ namespace Warehouse.Levels
         {
             _data.levelName = string.IsNullOrWhiteSpace(_nameField.text) ? "Untitled" : _nameField.text.Trim();
             _data.author = _authorField.text;
+
+            float t;
+            if (float.TryParse(_timerField.text, NumberStyles.Float, CultureInfo.InvariantCulture, out t) && t > 0f)
+                _data.timer = t;
+            else
+                _data.timer = 120f;
         }
 
         private void NewLevel()
@@ -465,12 +501,13 @@ namespace Warehouse.Levels
             ClearAll();
             _data = new LevelData();
             _data.levelName = "Untitled";
+            _data.timer = 120f;
 
             _nameField.text = "Untitled";
             _authorField.text = "";
-            _destField.text = "A";
+            _timerField.text = "120";
             SetStatus("New level.");
-            UpdateDestVisibility();
+            UpdateColorVisibility();
             UpdateStatus();
         }
 
@@ -539,9 +576,53 @@ namespace Warehouse.Levels
             _data = loaded;
             _nameField.text = _data.levelName;
             _authorField.text = _data.author;
+            _timerField.text = _data.timer.ToString("0.#");
             Rebuild();
             CloseLoadPanel();
             SetStatus("Loaded: " + Path.GetFileName(path));
+        }
+
+        // ------------------------------------------------------------------ pause
+
+        private void TogglePause()
+        {
+            _paused = !_paused;
+            _pausePanel.SetActive(_paused);
+            if (_paused)
+            {
+                _dragging = null;
+                _painting = false;
+                ShowPauseMain();
+            }
+        }
+
+        private void ResumeEditor()
+        {
+            _paused = false;
+            _pausePanel.SetActive(false);
+        }
+
+        private void ShowPauseMain()
+        {
+            _pauseMain.SetActive(true);
+            _pauseConfirm.SetActive(false);
+        }
+
+        private void ShowPauseConfirm()
+        {
+            _pauseMain.SetActive(false);
+            _pauseConfirm.SetActive(true);
+        }
+
+        private void SaveAndExit()
+        {
+            SaveWorking();
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        private void ExitWithoutSave()
+        {
+            SceneManager.LoadScene("MainMenu");
         }
 
         // ------------------------------------------------------------------ UI
@@ -557,20 +638,20 @@ namespace Warehouse.Levels
 
             CreateTopLabel(top, "Level:", 20f);
             _nameField = UIFactory.CreateInputField(top, "Untitled", "level name");
-            PlaceAnchored(_nameField.GetComponent<RectTransform>(), 90f, 280f, 0f, 42f);
+            PlaceAnchored(_nameField.GetComponent<RectTransform>(), 90f, 240f, 0f, 42f);
 
-            CreateTopLabel(top, "Author:", 390f);
+            CreateTopLabel(top, "Author:", 350f);
             _authorField = UIFactory.CreateInputField(top, "", "author");
-            PlaceAnchored(_authorField.GetComponent<RectTransform>(), 475f, 200f, 0f, 42f);
+            PlaceAnchored(_authorField.GetComponent<RectTransform>(), 425f, 150f, 0f, 42f);
 
-            _destLabel = CreateTopLabel(top, "Dest. ID:", 695f);
-            _destField = UIFactory.CreateInputField(top, "A", "A");
-            PlaceAnchored(_destField.GetComponent<RectTransform>(), 790f, 110f, 0f, 42f);
-            _destField.onValueChanged.AddListener(OnDestChanged);
+            CreateTopLabel(top, "Timer (s):", 595f);
+            _timerField = UIFactory.CreateInputField(top, "120", "120");
+            PlaceAnchored(_timerField.GetComponent<RectTransform>(), 705f, 80f, 0f, 42f);
+            _timerField.onValueChanged.AddListener(OnTimerChanged);
 
             _status = UIFactory.CreateText(top, "", 20, new Color(0.8f, 0.85f, 0.95f, 1f), TextAnchor.MiddleRight);
             UIFactory.SetAnchored(_status.rectTransform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),
-                new Vector2(1f, 0.5f), new Vector2(-20f, 0f), new Vector2(780f, 50f));
+                new Vector2(1f, 0.5f), new Vector2(-20f, 0f), new Vector2(1000f, 50f));
 
             // ---- palette ----
             RectTransform palette = UIFactory.CreatePanel(canvas.transform, "Palette",
@@ -587,14 +668,16 @@ namespace Warehouse.Levels
             LayoutElement titleLe = paletteTitle.gameObject.AddComponent<LayoutElement>();
             titleLe.preferredHeight = 30f;
 
-            UIFactory.CreateButton(palette, "Hand (move)", SetHand, 46f);
+            UIFactory.CreateButton(palette, "Hand (move)", SetHand, 40f);
             foreach (PlaceableDef def in PlaceableCatalog.All)
             {
                 PlaceableType captured = def.type;
-                UIFactory.CreateButton(palette, def.displayName, () => SetTool(captured), 46f);
+                UIFactory.CreateButton(palette, def.displayName, () => SetTool(captured), 40f);
             }
 
-            _snapButton = UIFactory.CreateButton(palette, "Snap: ON", ToggleSnap, 40f);
+            _snapButton = UIFactory.CreateButton(palette, "Snap: ON", ToggleSnap, 34f);
+
+            BuildColorSection(palette);
 
             // ---- bottom bar ----
             RectTransform bottom = UIFactory.CreatePanel(canvas.transform, "BottomBar",
@@ -612,6 +695,7 @@ namespace Warehouse.Levels
             UIFactory.CreateButton(bottom, "Save", SaveWorking);
             UIFactory.CreateButton(bottom, "Import", OpenLoadPanel);
             UIFactory.CreateButton(bottom, "Export Playable", ExportActive);
+            UIFactory.CreateButton(bottom, "Pause", () => { _paused = false; TogglePause(); });
 
             // ---- load panel ----
             _loadPanel = UIFactory.CreatePanel(canvas.transform, "LoadPanel",
@@ -633,13 +717,125 @@ namespace Warehouse.Levels
                 new Vector2(0.5f, 0f), new Vector2(0f, 12f), new Vector2(200f, 44f));
 
             _loadPanel.SetActive(false);
+
+            BuildPauseMenu(canvas);
+        }
+
+        private void BuildColorSection(RectTransform palette)
+        {
+            RectTransform cs = UIFactory.CreatePanel(palette, "ColorSection", new Color(0f, 0f, 0f, 0.25f),
+                Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            LayoutElement le = cs.gameObject.AddComponent<LayoutElement>();
+            le.preferredHeight = 250f;
+            le.minHeight = 250f;
+            _colorSection = cs.gameObject;
+
+            Text title = UIFactory.CreateText(cs, "COLOR", 18, Color.white, TextAnchor.MiddleLeft, FontStyle.Bold);
+            PlaceInSection(title.rectTransform, 6f, 4f, 190f, 24f);
+
+            RectTransform swatch = UIFactory.CreatePanel(cs, "Swatch", Color.white,
+                Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+            PlaceInSection(swatch, 6f, 30f, 190f, 34f);
+            _colorSwatch = swatch.GetComponent<Image>();
+
+            _redSlider = CreateColorRow(cs, "R", 68f, new Color(0.90f, 0.30f, 0.30f));
+            _greenSlider = CreateColorRow(cs, "G", 100f, new Color(0.30f, 0.85f, 0.35f));
+            _blueSlider = CreateColorRow(cs, "B", 132f, new Color(0.35f, 0.50f, 0.95f));
+
+            // preset swatches
+            GameObject row = new GameObject("Presets", typeof(RectTransform), typeof(HorizontalLayoutGroup));
+            row.transform.SetParent(cs, false);
+            RectTransform rowRt = row.GetComponent<RectTransform>();
+            PlaceInSection(rowRt, 6f, 168f, 190f, 30f);
+            HorizontalLayoutGroup hlg = row.GetComponent<HorizontalLayoutGroup>();
+            hlg.childForceExpandWidth = true;
+            hlg.childForceExpandHeight = true;
+            hlg.childControlWidth = true;
+            hlg.childControlHeight = true;
+            hlg.spacing = 4f;
+
+            for (int i = 0; i < Presets.Length; i++)
+            {
+                Color preset = Presets[i];
+                Button b = UIFactory.CreateButton(row.transform, "", null, 30f);
+                Image img = b.GetComponent<Image>();
+                if (img != null) img.color = preset;
+                Text label = b.GetComponentInChildren<Text>();
+                if (label != null) label.text = "";
+                b.onClick.AddListener(() => SetCurrentColor(preset, true));
+            }
+
+            Text hint = UIFactory.CreateText(cs, "0 - 1 per channel", 14, new Color(1f, 1f, 1f, 0.5f), TextAnchor.MiddleLeft);
+            PlaceInSection(hint.rectTransform, 6f, 202f, 190f, 20f);
+        }
+
+        private Slider CreateColorRow(RectTransform parent, string label, float y, Color fill)
+        {
+            Text l = UIFactory.CreateText(parent, label, 18, Color.white, TextAnchor.MiddleLeft);
+            PlaceInSection(l.rectTransform, 6f, y, 18f, 22f);
+
+            Slider s = UIFactory.CreateSlider(parent, 0f, 1f, 0f, OnColorSliderChanged, 22f, fill);
+            PlaceInSection(s.GetComponent<RectTransform>(), 28f, y, 168f, 22f);
+            return s;
+        }
+
+        private void PlaceInSection(RectTransform rt, float x, float y, float w, float h)
+        {
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(0f, 1f);
+            rt.pivot = new Vector2(0f, 1f);
+            rt.anchoredPosition = new Vector2(x, -y);
+            rt.sizeDelta = new Vector2(w, h);
+        }
+
+        private void BuildPauseMenu(Canvas canvas)
+        {
+            _pausePanel = UIFactory.CreatePanel(canvas.transform, "PausePanel", new Color(0f, 0f, 0f, 0.72f),
+                Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero).gameObject;
+
+            _pauseMain = UIFactory.CreatePanel(_pausePanel.transform, "PauseMain", new Color(0.08f, 0.09f, 0.12f, 0.99f),
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-260f, -170f), new Vector2(260f, 170f)).gameObject;
+
+            Text t1 = UIFactory.CreateText(_pauseMain.transform, "PAUSED", 36, Color.white, TextAnchor.MiddleCenter, FontStyle.Bold);
+            UIFactory.SetAnchored(t1.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+                new Vector2(0.5f, 1f), new Vector2(0f, -20f), new Vector2(400f, 50f));
+
+            Button cont = UIFactory.CreateButton(_pauseMain.transform, "Continue", ResumeEditor, 52f);
+            UIFactory.SetAnchored(cont.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f), new Vector2(0f, 20f), new Vector2(320f, 52f));
+
+            Button menu = UIFactory.CreateButton(_pauseMain.transform, "Main Menu", ShowPauseConfirm, 52f);
+            UIFactory.SetAnchored(menu.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f), new Vector2(0f, -50f), new Vector2(320f, 52f));
+
+            _pauseConfirm = UIFactory.CreatePanel(_pausePanel.transform, "PauseConfirm", new Color(0.08f, 0.09f, 0.12f, 0.99f),
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-320f, -180f), new Vector2(320f, 180f)).gameObject;
+
+            Text t2 = UIFactory.CreateText(_pauseConfirm.transform, "Save the level before leaving?", 26, Color.white,
+                TextAnchor.MiddleCenter, FontStyle.Bold);
+            UIFactory.SetAnchored(t2.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f),
+                new Vector2(0.5f, 1f), new Vector2(0f, -24f), new Vector2(600f, 60f));
+
+            Button save = UIFactory.CreateButton(_pauseConfirm.transform, "Save & Exit", SaveAndExit, 50f);
+            UIFactory.SetAnchored(save.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f), new Vector2(0f, 25f), new Vector2(380f, 50f));
+
+            Button exit = UIFactory.CreateButton(_pauseConfirm.transform, "Exit Without Saving", ExitWithoutSave, 50f);
+            UIFactory.SetAnchored(exit.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f), new Vector2(0f, -40f), new Vector2(380f, 50f));
+
+            Button cancel = UIFactory.CreateButton(_pauseConfirm.transform, "Cancel", ShowPauseMain, 50f);
+            UIFactory.SetAnchored(cancel.GetComponent<RectTransform>(), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f), new Vector2(0f, -105f), new Vector2(380f, 50f));
+
+            _pausePanel.SetActive(false);
         }
 
         private Text CreateTopLabel(RectTransform parent, string text, float x)
         {
             Text t = UIFactory.CreateText(parent, text, 20, Color.white, TextAnchor.MiddleLeft);
             UIFactory.SetAnchored(t.rectTransform, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
-                new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(90f, 40f));
+                new Vector2(0f, 0.5f), new Vector2(x, 0f), new Vector2(110f, 40f));
             return t;
         }
 
@@ -674,8 +870,8 @@ namespace Warehouse.Levels
         private void SetHand()
         {
             _handMode = true;
-            SetStatus("Tool: Hand (move / edit destination)");
-            UpdateDestVisibility();
+            SetStatus("Tool: Hand (move / edit colour)");
+            UpdateColorVisibility();
         }
 
         private void SetTool(PlaceableType type)
@@ -683,7 +879,7 @@ namespace Warehouse.Levels
             _handMode = false;
             _tool = type;
             SetStatus("Tool: " + PlaceableCatalog.Get(type).displayName);
-            UpdateDestVisibility();
+            UpdateColorVisibility();
         }
 
         private void ToggleSnap()
@@ -694,28 +890,52 @@ namespace Warehouse.Levels
                 t.text = _snap ? "Snap: ON" : "Snap: OFF";
         }
 
-        private void OnDestChanged(string v)
+        private void OnTimerChanged(string v)
         {
-            if (_suppressDestEvent)
+            float t;
+            if (float.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out t) && t > 0f)
+                _data.timer = t;
+        }
+
+        private void OnColorSliderChanged(float _)
+        {
+            if (_suppressColorEvent)
                 return;
-            if (_selected != null && (_selected.isDestination || _selected.isPickup))
+            SetCurrentColor(new Color(_redSlider.value, _greenSlider.value, _blueSlider.value, 1f), true);
+        }
+
+        private void SetCurrentColor(Color c, bool applyToSelection)
+        {
+            _currentColor = new Color(Mathf.Clamp01(c.r), Mathf.Clamp01(c.g), Mathf.Clamp01(c.b), 1f);
+
+            _suppressColorEvent = true;
+            if (_redSlider != null) _redSlider.value = _currentColor.r;
+            if (_greenSlider != null) _greenSlider.value = _currentColor.g;
+            if (_blueSlider != null) _blueSlider.value = _currentColor.b;
+            _suppressColorEvent = false;
+
+            if (_colorSwatch != null)
+                _colorSwatch.color = _currentColor;
+
+            if (applyToSelection && _selected != null && (_selected.isDestination || _selected.isPickup))
             {
-                _selected.destinationId = v;
+                _selected.color = _currentColor;
+                SpriteRenderer sr = _selected.GetComponent<SpriteRenderer>();
+                if (sr != null)
+                    sr.color = _currentColor;
+
                 LevelObjectData d;
                 if (_byId.TryGetValue(_selected.id, out d))
-                    d.destinationId = v;
+                    d.color = _currentColor;
             }
         }
 
-        private void UpdateDestVisibility()
+        private void UpdateColorVisibility()
         {
             bool need = (!_handMode && (_tool == PlaceableType.Shelf || _tool == PlaceableType.Box))
                         || (_selected != null && (_selected.isDestination || _selected.isPickup));
-
-            if (_destLabel != null)
-                _destLabel.gameObject.SetActive(need);
-            if (_destField != null)
-                _destField.gameObject.SetActive(need);
+            if (_colorSection != null)
+                _colorSection.SetActive(need);
         }
 
         private bool PointerOverUI()
@@ -764,8 +984,8 @@ namespace Warehouse.Levels
                 return;
             string tool = _handMode ? "Hand" : PlaceableCatalog.Get(_tool).displayName;
             SetStatus("Objects: " + _data.objects.Count +
-                      "   Spawn: (" + _data.playerSpawn.x.ToString("0.##") + ", " +
-                      _data.playerSpawn.y.ToString("0.##") + ")   Tool: " + tool);
+                      "   Timer: " + _data.timer.ToString("0.#") + "s" +
+                      "   Tool: " + tool);
         }
     }
 }

@@ -141,7 +141,7 @@ namespace Warehouse.UI
         }
 
         public static ScrollRect CreateScrollView(Transform parent, Vector2 anchorMin, Vector2 anchorMax,
-            Vector2 offsetMin, Vector2 offsetMax, out RectTransform content)
+            Vector2 offsetMin, Vector2 offsetMax, out RectTransform content, int padding = 8)
         {
             GameObject go = new GameObject("ScrollView", typeof(RectTransform), typeof(Image), typeof(ScrollRect));
             go.transform.SetParent(parent, false);
@@ -178,7 +178,7 @@ namespace Warehouse.UI
             vlg.childControlWidth = true;
             vlg.childControlHeight = true;
             vlg.spacing = 6f;
-            vlg.padding = new RectOffset(8, 8, 8, 8);
+            vlg.padding = new RectOffset(padding, padding, padding, padding);
 
             contentGO.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
@@ -190,6 +190,71 @@ namespace Warehouse.UI
             scroll.movementType = ScrollRect.MovementType.Clamped;
             scroll.scrollSensitivity = 30f;
             return scroll;
+        }
+
+        public static Slider CreateSlider(Transform parent, float min, float max, float value,
+            UnityAction<float> onChanged, float height = 22f, Color? fillColor = null)
+        {
+            GameObject go = new GameObject("Slider", typeof(RectTransform), typeof(Slider), typeof(LayoutElement));
+            go.transform.SetParent(parent, false);
+            LayoutElement le = go.GetComponent<LayoutElement>();
+            le.preferredHeight = height;
+            le.minHeight = height;
+
+            GameObject bg = new GameObject("Background", typeof(RectTransform), typeof(Image));
+            bg.transform.SetParent(go.transform, false);
+            RectTransform bgRt = bg.GetComponent<RectTransform>();
+            bgRt.anchorMin = new Vector2(0f, 0.3f);
+            bgRt.anchorMax = new Vector2(1f, 0.7f);
+            bgRt.offsetMin = Vector2.zero;
+            bgRt.offsetMax = Vector2.zero;
+            bg.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.55f);
+
+            GameObject fillArea = new GameObject("Fill Area", typeof(RectTransform));
+            fillArea.transform.SetParent(go.transform, false);
+            RectTransform faRt = fillArea.GetComponent<RectTransform>();
+            faRt.anchorMin = new Vector2(0f, 0.3f);
+            faRt.anchorMax = new Vector2(1f, 0.7f);
+            faRt.offsetMin = new Vector2(6f, 0f);
+            faRt.offsetMax = new Vector2(-6f, 0f);
+
+            GameObject fill = new GameObject("Fill", typeof(RectTransform), typeof(Image));
+            fill.transform.SetParent(fillArea.transform, false);
+            RectTransform fillRt = fill.GetComponent<RectTransform>();
+            fillRt.anchorMin = Vector2.zero;
+            fillRt.anchorMax = Vector2.one;
+            fillRt.offsetMin = Vector2.zero;
+            fillRt.offsetMax = Vector2.zero;
+            fill.GetComponent<Image>().color = fillColor ?? new Color(0.35f, 0.7f, 1f, 1f);
+
+            GameObject handleArea = new GameObject("Handle Slide Area", typeof(RectTransform));
+            handleArea.transform.SetParent(go.transform, false);
+            RectTransform haRt = handleArea.GetComponent<RectTransform>();
+            haRt.anchorMin = Vector2.zero;
+            haRt.anchorMax = Vector2.one;
+            haRt.offsetMin = new Vector2(10f, 0f);
+            haRt.offsetMax = new Vector2(-10f, 0f);
+
+            GameObject handle = new GameObject("Handle", typeof(RectTransform), typeof(Image));
+            handle.transform.SetParent(handleArea.transform, false);
+            RectTransform hRt = handle.GetComponent<RectTransform>();
+            hRt.anchorMin = new Vector2(0f, 0f);
+            hRt.anchorMax = new Vector2(0f, 1f);
+            hRt.sizeDelta = new Vector2(18f, 0f);
+            Image handleImg = handle.GetComponent<Image>();
+            handleImg.color = Color.white;
+
+            Slider s = go.GetComponent<Slider>();
+            s.fillRect = fillRt;
+            s.handleRect = hRt;
+            s.targetGraphic = handleImg;
+            s.direction = Slider.Direction.LeftToRight;
+            s.minValue = min;
+            s.maxValue = max;
+            s.value = value;
+            if (onChanged != null)
+                s.onValueChanged.AddListener(onChanged);
+            return s;
         }
 
         public static void Stretch(RectTransform rt)

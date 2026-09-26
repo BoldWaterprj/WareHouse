@@ -39,10 +39,6 @@ namespace Warehouse.Levels
             UIFactory.SetAnchored(back.GetComponent<RectTransform>(), new Vector2(0f, 0f), new Vector2(0f, 0f),
                 new Vector2(0f, 0f), new Vector2(20f, 20f), new Vector2(220f, 50f));
 
-            Button debug = UIFactory.CreateButton(canvas.transform, "Debug Level", () => SceneManager.LoadScene("SampleScene"), 50f);
-            UIFactory.SetAnchored(debug.GetComponent<RectTransform>(), new Vector2(0.5f, 0f), new Vector2(0.5f, 0f),
-                new Vector2(0.5f, 0f), new Vector2(0f, 20f), new Vector2(260f, 50f));
-
             Button refresh = UIFactory.CreateButton(canvas.transform, "Refresh", Refresh, 50f);
             UIFactory.SetAnchored(refresh.GetComponent<RectTransform>(), new Vector2(1f, 0f), new Vector2(1f, 0f),
                 new Vector2(1f, 0f), new Vector2(-20f, 20f), new Vector2(220f, 50f));
