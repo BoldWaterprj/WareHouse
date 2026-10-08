@@ -48,7 +48,7 @@ public class Pick : MonoBehaviour
     {
         isHolding = false;
 
-        if (transform.parent != null)
+        if (transform.parent != null && transform.parent.parent != null)
         {
             transform.parent.parent.gameObject.SendMessage("SetCarriedBox", null, SendMessageOptions.DontRequireReceiver);
         }

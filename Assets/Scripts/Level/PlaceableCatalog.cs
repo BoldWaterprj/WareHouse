@@ -138,7 +138,7 @@ namespace Warehouse.Levels
             // Floor / Wall / Column use their own textures (white tint shows them as-is).
             // Shelf / Box are tinted per instance by their colour code.
             _defs = new Dictionary<PlaceableType, PlaceableDef>();
-            Add(PlaceableType.Floor, "Floor", Color.white, new Vector2(1f, 1f), false, false, false, -20);
+            Add(PlaceableType.Floor, "Floor", Color.white, new Vector2(1f, 1f), false, false, false, -100);
             Add(PlaceableType.Wall, "Wall", new Color(0.35f, 0.48f, 0.88f), new Vector2(1f, 1f), true, false, false, 0);
             Add(PlaceableType.Column, "Column", Color.white, new Vector2(1f, 1f), true, false, false, 1);
             Add(PlaceableType.Shelf, "Shelf", Color.white, new Vector2(2f, 1f), true, true, false, 10);
@@ -217,7 +217,15 @@ namespace Warehouse.Levels
             sr.color = colorOverride ?? def.color;
             sr.sortingOrder = def.sortingOrder;
             if (UnlitMaterial != null)
-                sr.sharedMaterial = UnlitMaterial;
+            {
+                // One material instance per object. A single shared sprite material
+                // can leak the last sprite's texture onto every other object.
+                Material m = new Material(UnlitMaterial);
+                if (sprite != null)
+                    m.mainTexture = sprite.texture;
+                sr.sharedMaterial = m;
+                go.AddComponent<MaterialOwner>().material = m;
+            }
 
             return go;
         }
